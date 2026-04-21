@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동안약침 피부 자가진단 | 영은한의원</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6f0;
+    --gold: #b8975a;
+    --gold-light: #d4b483;
+    --deep: #2c2218;
+    --mid: #6b5740;
+    --soft: #e8ddd0;
+    --green: #4a7c59;
+    --green-light: #e8f0eb;
+    --red: #9b3a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--cream);
+    color: var(--deep);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #2c2218 0%, #4a3828 50%, #6b5740 100%);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(184,151,90,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 5px 16px;
+    margin-bottom: 20px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--gold-light); }
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 360px;
+    margin: 0 auto 28px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    background: var(--soft);
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(184,151,90,0.2);
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--mid);
+    font-weight: 500;
+  }
+  .progress-count {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .progress-bar {
+    height: 4px;
+    background: rgba(184,151,90,0.2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* QUIZ */
+  .quiz-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 32px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title::before, .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(184,151,90,0.3);
+  }
+
+  .question-card {
+    background: #fff;
+    border: 1px solid rgba(184,151,90,0.15);
+    border-radius: 16px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s forwards;
+    box-shadow: 0 2px 20px rgba(44,34,24,0.06);
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-num {
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--deep);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .option-btn {
+    background: var(--cream);
+    border: 1.5px solid rgba(184,151,90,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--mid);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.5;
+  }
+  .option-btn:hover {
+    border-color: var(--gold);
+    color: var(--deep);
+    background: #fff9f0;
+  }
+  .option-btn.selected {
+    background: linear-gradient(135deg, #fff9f0, #fdf3e7);
+    border-color: var(--gold);
+    color: var(--deep);
+    font-weight: 500;
+  }
+  .option-btn.selected::before {
+    content: '✓ ';
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* SUBMIT */
+  .submit-wrap {
+    text-align: center;
+    padding: 8px 0 16px;
+    display: none;
+  }
+  .submit-wrap.show { display: block; }
+  .submit-btn {
+    background: linear-gradient(135deg, var(--deep), #4a3828);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 48px;
+    font-size: 15px;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(44,34,24,0.25);
+    transition: all 0.3s;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(44,34,24,0.35);
+  }
+
+  /* RESULT */
+  .result-section {
+    display: none;
+    padding: 0 20px 80px;
+    max-width: 600px;
+    margin: 0 auto;
+    animation: fadeUp 0.6s forwards;
+  }
+  .result-section.show { display: block; }
+
+  .result-hero {
+    background: linear-gradient(160deg, var(--deep), #4a3828);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    margin: 24px 0 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(184,151,90,0.1);
+  }
+  .result-type-badge {
+    display: inline-block;
+    background: rgba(184,151,90,0.2);
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .result-type-name {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 24px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .result-type-name span { color: var(--gold-light); }
+  .result-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.8;
+  }
+
+  .result-card {
+    background: #fff;
+    border: 1px solid rgba(184,151,90,0.15);
+    border-radius: 16px;
+    padding: 24px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 16px rgba(44,34,24,0.05);
+  }
+  .result-card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .result-card-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(184,151,90,0.2);
+  }
+
+  .symptom-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .symptom-list li {
+    background: var(--cream);
+    border: 1px solid rgba(184,151,90,0.2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--mid);
+  }
+
+  .treatment-item {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--soft);
+  }
+  .treatment-item:last-child { border-bottom: none; }
+  .treat-icon {
+    width: 36px; height: 36px;
+    background: var(--green-light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .treat-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--deep);
+    margin-bottom: 3px;
+  }
+  .treat-desc {
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  .score-bar-wrap {
+    margin-bottom: 12px;
+  }
+  .score-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--mid);
+    margin-bottom: 5px;
+  }
+  .score-bar {
+    height: 6px;
+    background: var(--soft);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  /* CTA */
+  .cta-card {
+    background: linear-gradient(135deg, var(--green), #3a6347);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .cta-card h3 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .cta-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: #fff;
+    color: var(--green);
+    border: none;
+    border-radius: 50px;
+    padding: 14px 36px;
+    font-size: 14px;
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+  }
+
+  .retry-btn {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 1.5px solid rgba(184,151,90,0.3);
+    border-radius: 50px;
+    padding: 13px;
+    font-size: 13px;
+    color: var(--mid);
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+  }
+  .retry-btn:hover {
+    border-color: var(--gold);
+    color: var(--deep);
+  }
+
+  .clinic-info {
+    text-align: center;
+    padding: 16px;
+    font-size: 12px;
+    color: rgba(107,87,64,0.6);
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">YOUNGEUN KOREAN MEDICINE</div>
+  <h1>나의 피부 나이는<br><span>몇 살일까요?</span></h1>
+  <p>12가지 질문으로 알아보는 피부 유형 진단.<br>맞춤 동안약침 프로토콜을 무료로 확인하세요.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">진단 문항</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">피부 유형</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3분</div>
+      <div class="stat-label">소요 시간</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-top">
+    <span class="progress-label" id="progressLabel">진단을 시작해주세요</span>
+    <span class="progress-count" id="progressCount">0 / 12</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-container" id="quizContainer">
+
+  <div class="section-title">피부 상태</div>
+
+  <div class="question-card" style="animation-delay:0.05s">
+    <div class="q-num">Q 01</div>
+    <div class="q-text">세안 후 보습 없이 30분이 지나면 피부가 어떤가요?</div>
+    <div class="options">
+      <button class="option-btn" data-q="1" data-v="dry" onclick="select(this)">당기고 건조해서 당장 뭔가 발라야 해요</button>
+      <button class="option-btn" data-q="1" data-v="oily" onclick="select(this)">금방 번들거리고 기름이 올라와요</button>
+      <button class="option-btn" data-q="1" data-v="combo" onclick="select(this)">T존은 번들, 볼은 건조한 편이에요</button>
+      <button class="option-btn" data-q="1" data-v="sensitive" onclick="select(this)">따갑거나 붉어지는 느낌이 있어요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.1s">
+    <div class="q-num">Q 02</div>
+    <div class="q-text">거울 앞에서 피부를 봤을 때 모공 상태는?</div>
+    <div class="options">
+      <button class="option-btn" data-q="2" data-v="dry" onclick="select(this)">모공이 작고 잘 보이지 않아요</button>
+      <button class="option-btn" data-q="2" data-v="oily" onclick="select(this)">코·이마 모공이 크고 뚜렷해요</button>
+      <button class="option-btn" data-q="2" data-v="combo" onclick="select(this)">T존만 모공이 두드러져요</button>
+      <button class="option-btn" data-q="2" data-v="sensitive" onclick="select(this)">모공보다 붉음증이 더 신경 쓰여요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.15s">
+    <div class="q-num">Q 03</div>
+    <div class="q-text">피부 톤 고민이 있다면 어느 쪽에 가깝나요?</div>
+    <div class="options">
+      <button class="option-btn" data-q="3" data-v="dry" onclick="select(this)">칙칙하고 전반적으로 어두운 편이에요</button>
+      <button class="option-btn" data-q="3" data-v="oily" onclick="select(this)">번들거려서 화장이 잘 안 받아요</button>
+      <button class="option-btn" data-q="3" data-v="combo" onclick="select(this)">부위별로 톤 차이가 나요</button>
+      <button class="option-btn" data-q="3" data-v="sensitive" onclick="select(this)">쉽게 붉어지거나 홍조가 있어요</button>
+    </div>
+  </div>
+
+  <div class="section-title">노화 고민</div>
+
+  <div class="question-card" style="animation-delay:0.2s">
+    <div class="q-num">Q 04</div>
+    <div class="q-text">주름이 가장 신경 쓰이는 부위는?</div>
+    <div class="options">
+      <button class="option-btn" data-q="4" data-v="dry" onclick="select(this)">눈 밑 잔주름, 입가 주름이 깊어지고 있어요</button>
+      <button class="option-btn" data-q="4" data-v="oily" onclick="select(this)">이마나 미간 주름이 더 걱정돼요</button>
+      <button class="option-btn" data-q="4" data-v="combo" onclick="select(this)">팔자주름·마리오네트 라인이 생겼어요</button>
+      <button class="option-btn" data-q="4" data-v="sensitive" onclick="select(this)">주름보다 피부 얇아짐이 더 걱정이에요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.25s">
+    <div class="q-num">Q 05</div>
+    <div class="q-text">피부 탄력·처짐에 대해 어떻게 느끼시나요?</div>
+    <div class="options">
+      <button class="option-btn" data-q="5" data-v="dry" onclick="select(this)">전체적으로 탄력이 많이 떨어진 느낌이에요</button>
+      <button class="option-btn" data-q="5" data-v="oily" onclick="select(this)">피부가 무거워지고 아랫부분이 처지는 것 같아요</button>
+      <button class="option-btn" data-q="5" data-v="combo" onclick="select(this)">얼굴 윤곽이 예전보다 흐려졌어요</button>
+      <button class="option-btn" data-q="5" data-v="sensitive" onclick="select(this)">탄력보다는 피부결이 거칠어진 게 더 눈에 띄어요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.3s">
+    <div class="q-num">Q 06</div>
+    <div class="q-text">색소·잡티 고민은?</div>
+    <div class="options">
+      <button class="option-btn" data-q="6" data-v="dry" onclick="select(this)">기미, 칙칙한 잡티가 많아졌어요</button>
+      <button class="option-btn" data-q="6" data-v="oily" onclick="select(this)">여드름 자국·흉터가 남아 있어요</button>
+      <button class="option-btn" data-q="6" data-v="combo" onclick="select(this)">크게 심하진 않지만 전반적으로 고르지 않아요</button>
+      <button class="option-btn" data-q="6" data-v="sensitive" onclick="select(this)">붉은 혈관이나 모세혈관 확장이 보여요</button>
+    </div>
+  </div>
+
+  <div class="section-title">생활 & 체질</div>
+
+  <div class="question-card" style="animation-delay:0.35s">
+    <div class="q-num">Q 07</div>
+    <div class="q-text">평소 수면 패턴은 어떤가요?</div>
+    <div class="options">
+      <button class="option-btn" data-q="7" data-v="dry" onclick="select(this)">수면 부족이 잦고 자도 개운하지 않아요</button>
+      <button class="option-btn" data-q="7" data-v="oily" onclick="select(this)">잠은 잘 자는 편이지만 늦게 자요</button>
+      <button class="option-btn" data-q="7" data-v="combo" onclick="select(this)">불규칙한 편이에요 (교대근무·야근 등)</button>
+      <button class="option-btn" data-q="7" data-v="sensitive" onclick="select(this)">스트레스로 잠들기 어려운 편이에요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.4s">
+    <div class="q-num">Q 08</div>
+    <div class="q-text">소화·장 건강은 어떤가요?</div>
+    <div class="options">
+      <button class="option-btn" data-q="8" data-v="dry" onclick="select(this)">소화가 약한 편이고 속이 자주 더부룩해요</button>
+      <button class="option-btn" data-q="8" data-v="oily" onclick="select(this)">음식을 잘 먹는 편, 과식하는 경향이 있어요</button>
+      <button class="option-btn" data-q="8" data-v="combo" onclick="select(this)">들쑥날쑥해요 (변비와 설사 반복)</button>
+      <button class="option-btn" data-q="8" data-v="sensitive" onclick="select(this)">긴장하면 배가 아프거나 소화가 안 돼요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.45s">
+    <div class="q-num">Q 09</div>
+    <div class="q-text">몸의 열감·순환은?</div>
+    <div class="options">
+      <button class="option-btn" data-q="9" data-v="dry" onclick="select(this)">손발이 차고 몸이 자주 추워요</button>
+      <button class="option-btn" data-q="9" data-v="oily" onclick="select(this)">상체에 열이 많고 얼굴이 달아오를 때가 있어요</button>
+      <button class="option-btn" data-q="9" data-v="combo" onclick="select(this)">위는 뜨겁고 발은 차가운 편이에요</button>
+      <button class="option-btn" data-q="9" data-v="sensitive" onclick="select(this)">갑자기 화끈거리거나 식은땀이 나요</button>
+    </div>
+  </div>
+
+  <div class="section-title">피부 반응</div>
+
+  <div class="question-card" style="animation-delay:0.5s">
+    <div class="q-num">Q 10</div>
+    <div class="q-text">화장품이나 시술에 대한 피부 반응은?</div>
+    <div class="options">
+      <button class="option-btn" data-q="10" data-v="dry" onclick="select(this)">자극적인 성분에 쉽게 건조해지고 당겨요</button>
+      <button class="option-btn" data-q="10" data-v="oily" onclick="select(this)">여드름이 잘 나거나 트러블이 잦아요</button>
+      <button class="option-btn" data-q="10" data-v="combo" onclick="select(this)">부위마다 반응이 달라요</button>
+      <button class="option-btn" data-q="10" data-v="sensitive" onclick="select(this)">쉽게 붉어지고 따가움·간지러움이 있어요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.55s">
+    <div class="q-num">Q 11</div>
+    <div class="q-text">계절이나 환경 변화에 피부가 어떻게 반응하나요?</div>
+    <div class="options">
+      <button class="option-btn" data-q="11" data-v="dry" onclick="select(this)">겨울·건조한 날씨에 유독 피부가 나빠져요</button>
+      <button class="option-btn" data-q="11" data-v="oily" onclick="select(this)">여름·습한 날씨에 더 번들거리고 트러블이 생겨요</button>
+      <button class="option-btn" data-q="11" data-v="combo" onclick="select(this)">환절기에 피부가 유독 예민해져요</button>
+      <button class="option-btn" data-q="11" data-v="sensitive" onclick="select(this)">미세먼지나 자외선에 쉽게 반응해요</button>
+    </div>
+  </div>
+
+  <div class="question-card" style="animation-delay:0.6s">
+    <div class="q-num">Q 12</div>
+    <div class="q-text">가장 원하는 피부 변화를 하나만 고른다면?</div>
+    <div class="options">
+      <button class="option-btn" data-q="12" data-v="dry" onclick="select(this)">촉촉하고 생기 있는 피부로 되돌리고 싶어요</button>
+      <button class="option-btn" data-q="12" data-v="oily" onclick="select(this)">피지 조절되고 매끄러운 피부결을 원해요</button>
+      <button class="option-btn" data-q="12" data-v="combo" onclick="select(this)">탄력·리프팅으로 윤곽을 살리고 싶어요</button>
+      <button class="option-btn" data-q="12" data-v="sensitive" onclick="select(this)">피부 장벽을 회복해 예민함을 줄이고 싶어요</button>
+    </div>
+  </div>
+
+  <div class="submit-wrap" id="submitWrap">
+    <button class="submit-btn" onclick="showResult()">✦ 나의 피부 유형 확인하기</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="result-section" id="resultSection">
+  <div id="resultContent"></div>
+  <div style="padding: 0 0 16px">
+    <button class="retry-btn" onclick="retryQuiz()">↺ 다시 진단하기</button>
+  </div>
+  <div class="clinic-info">
+    영은한의원 · 서울시 서초구 동산로2길 25 2층<br>
+    ☎ 02-573-8455 · 원장 이영은
+  </div>
+</div>
+
+<script>
+const answers = {};
+const TOTAL = 12;
+
+const types = {
+  dry: {
+    name: '음허형 건성 피부',
+    badge: '음허 · 건조',
+    emoji: '💧',
+    desc: '몸의 진액(음)이 부족해 피부에 수분 공급이 원활하지 않은 상태입니다. 한방에서는 "음허화왕(陰虛火旺)"으로 보며, 피부 보습과 진액 보충이 핵심 치료 방향입니다.',
+    symptoms: ['건조함·당김', '잔주름·탄력저하', '칙칙한 피부톤', '기미·색소침착', '손발 냉감', '만성 피로'],
+    score: { moisture: 30, elasticity: 55, tone: 50, sensitivity: 60 },
+    treatments: [
+      { icon: '💉', name: '자하거 약침', desc: '태반 추출 성분으로 피부 재생과 수분막 복원. 음허형 피부에 가장 추천되는 핵심 약침' },
+      { icon: '🌿', name: '녹용 보음 약침', desc: '진액을 보충하고 세포 재생을 촉진. 깊은 보습과 탄력 회복 효과' },
+      { icon: '✨', name: '침 치료 (신수·삼음교)', desc: '신장 기능을 보강해 피부 수분 대사를 근본적으로 개선' },
+      { icon: '🫖', name: '육미지황탕 계열 한약', desc: '음허를 보충하는 대표 처방. 피부 보습과 노화 방지에 효과적' }
+    ]
+  },
+  oily: {
+    name: '습열형 지성 피부',
+    badge: '습열 · 과잉',
+    emoji: '🔥',
+    desc: '체내 습(濕)과 열(熱)이 과잉되어 피지 분비가 많고 피부 트러블이 잦은 상태입니다. 노폐물 배출과 열 조절이 치료의 핵심입니다.',
+    symptoms: ['과잉 피지', '여드름·트러블', '넓은 모공', '여드름 흉터', '얼굴 달아오름', '상열감'],
+    score: { moisture: 70, elasticity: 60, tone: 40, sensitivity: 50 },
+    treatments: [
+      { icon: '💉', name: '황련 약침', desc: '청열해독(淸熱解毒) 작용으로 피지 조절과 염증 억제. 여드름·트러블 피부의 필수 약침' },
+      { icon: '🌿', name: '어성초 약침', desc: '항균·항염 효과로 모공 정화와 피부결 개선' },
+      { icon: '✨', name: '침 치료 (합곡·곡지)', desc: '대장·폐 기능을 조절해 피부 노폐물 배출 강화' },
+      { icon: '🫖', name: '형개연교탕 계열 한약', desc: '습열을 제거하는 처방. 지속적인 피지 조절과 모공 관리에 효과적' }
+    ]
+  },
+  combo: {
+    name: '기체형 복합 피부',
+    badge: '기체 · 순환',
+    emoji: '🌀',
+    desc: '기(氣)의 흐름이 원활하지 않아 혈액순환과 림프 순환이 저하된 상태입니다. 부위별로 다른 피부 상태가 나타나고 얼굴 윤곽 변화가 두드러집니다.',
+    symptoms: ['부위별 복합 피부', '얼굴 처짐·윤곽 변화', '팔자주름·마리오네트', '칙칙한 안색', '부종·얼굴 붓기', '불규칙한 피부상태'],
+    score: { moisture: 55, elasticity: 40, tone: 55, sensitivity: 45 },
+    treatments: [
+      { icon: '💉', name: '봉독 약침', desc: '리프팅·탄력 효과 탁월. 콜라겐 생성을 자극해 처진 피부와 윤곽 개선에 특화' },
+      { icon: '🌿', name: '홍화 순환 약침', desc: '혈행을 촉진해 얼굴 부종·처짐 개선. 안색 밝힘 효과' },
+      { icon: '✨', name: '침 치료 (족삼리·태충)', desc: '간 기능과 소화 기능을 함께 조절해 기의 흐름 회복' },
+      { icon: '🫖', name: '소요산·사물탕 계열 한약', desc: '기혈 순환을 개선하는 처방. 피부 탄력과 윤곽 유지에 장기적 효과' }
+    ]
+  },
+  sensitive: {
+    name: '위기허약형 민감 피부',
+    badge: '위기허 · 민감',
+    emoji: '🛡️',
+    desc: '피부 방어막(위기, 衛氣)이 약해져 외부 자극에 쉽게 반응하는 상태입니다. 피부 장벽 강화와 면역 조절이 우선 과제입니다.',
+    symptoms: ['쉬운 홍조·붉어짐', '자극 반응 민감', '피부 얇아짐', '모세혈관 확장', '스트레스성 트러블', '계절 변화에 취약'],
+    score: { moisture: 45, elasticity: 50, tone: 35, sensitivity: 25 },
+    treatments: [
+      { icon: '💉', name: '황기 약침', desc: '위기(위기)를 보강해 피부 방어막을 강화. 민감성 피부의 근본 치료' },
+      { icon: '🌿', name: '감초·백출 진정 약침', desc: '항염·진정 효과로 즉각적인 붉음증·가려움 완화' },
+      { icon: '✨', name: '침 치료 (폐수·비수)', desc: '폐와 비장 기능을 보강해 피부 면역과 방어력 향상' },
+      { icon: '🫖', name: '옥병풍산 계열 한약', desc: '피부 면역을 강화하는 대표 처방. 민감도 감소와 장벽 복원에 효과적' }
+    ]
+  }
+};
+
+function select(btn) {
+  const q = btn.dataset.q;
+  const v = btn.dataset.v;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[q] = v;
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = Object.keys(answers).length;
+  const pct = (count / TOTAL) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = count + ' / ' + TOTAL;
+  document.getElementById('progressLabel').textContent = count === TOTAL ? '모든 질문 완료! 결과를 확인하세요 ✓' : `${TOTAL - count}개 질문이 남았어요`;
+  const wrap = document.getElementById('submitWrap');
+  if (count === TOTAL) wrap.classList.add('show');
+  else wrap.classList.remove('show');
+}
+
+function showResult() {
+  const counts = { dry: 0, oily: 0, combo: 0, sensitive: 0 };
+  Object.values(answers).forEach(v => counts[v]++);
+  const dominant = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+  const t = types[dominant];
+
+  const scores = t.score;
+  const scoreHTML = [
+    { label: '수분 지수', val: scores.moisture, color: '#4a7c59' },
+    { label: '탄력 지수', val: scores.elasticity, color: '#b8975a' },
+    { label: '톤 균일도', val: scores.tone, color: '#7b6ea0' },
+    { label: '피부 안정도', val: scores.sensitivity, color: '#9b3a3a' }
+  ].map(s => `
+    <div class="score-bar-wrap">
+      <div class="score-bar-label"><span>${s.label}</span><span>${s.val}%</span></div>
+      <div class="score-bar"><div class="score-bar-fill" style="width:${s.val}%;background:${s.color}"></div></div>
+    </div>
+  `).join('');
+
+  const symptomsHTML = t.symptoms.map(s => `<li>${s}</li>`).join('');
+  const treatsHTML = t.treatments.map(tr => `
+    <div class="treatment-item">
+      <div class="treat-icon">${tr.icon}</div>
+      <div>
+        <div class="treat-name">${tr.name}</div>
+        <div class="treat-desc">${tr.desc}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('resultContent').innerHTML = `
+    <div class="result-hero">
+      <div class="result-type-badge">${t.badge}</div>
+      <div class="result-type-name">${t.emoji} <span>${t.name}</span></div>
+      <div class="result-desc">${t.desc}</div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">주요 증상 패턴</div>
+      <ul class="symptom-list">${symptomsHTML}</ul>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">피부 상태 분석</div>
+      ${scoreHTML}
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">맞춤 동안약침 프로토콜</div>
+      ${treatsHTML}
+    </div>
+
+    <div class="cta-card">
+      <h3>무료 피부 상담 예약하기</h3>
+      <p>진단 결과를 바탕으로 원장님이 직접<br>1:1 맞춤 약침 프로토콜을 설계해드립니다.</p>
+      <a class="cta-btn" href="https://m.booking.naver.com/booking/13/bizes/650417?theme=place&service-target=map-pc&lang=ko&area=plt&map-search=1" target="_blank">📅 네이버 예약 바로가기</a>
+    </div>
+  `;
+
+  document.getElementById('quizContainer').style.display = 'none';
+  document.getElementById('resultSection').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('progressLabel').textContent = '진단 완료 ✓';
+}
+
+function retryQuiz() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('quizContainer').style.display = 'block';
+  document.getElementById('resultSection').classList.remove('show');
+  document.getElementById('submitWrap').classList.remove('show');
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressCount').textContent = '0 / 12';
+  document.getElementById('progressLabel').textContent = '진단을 시작해주세요';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
